@@ -7,18 +7,20 @@ using Newtonsoft.Json;
 
 namespace Entity.Models
 {
+
     public class Person
     {
         [Key]
         public int PersonId { get; set; }
         [Required]
         [JsonProperty("first_name")]
+        [Display(Name="Имя")]
         public string FirstName { get; set; }
         [Required]
         [JsonProperty("last_name")]
+        [Display(Name = "Фамилия")]
         public string LastName { get; set; }
         [Required]
-        [JsonProperty("uid")]
         public int UID { get; set; }
     }
 }

@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "PopularVideo";
+}
+
+<h2>PopularVideo</h2>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Embedded Video Example</title>
+    </head>
+    <body>
+        <h1>100 танцевальных сцен из фильмов под Uptown Funk</h1>
+        <p>Самое популярное видео среди ваших друзей:</p>
+        <iframe src='@ViewBag.PopularVideoPlayer' width="607" height="360" frameborder="0"></iframe>
+        @*<iframe width="490" height="320" src=https://vk.com/video-55667767_171963637
+frameborder="0" allowfullscreen></iframe>*@
+
+</body>
+</html>

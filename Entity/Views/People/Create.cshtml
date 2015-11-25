@@ -1,10 +1,8 @@
-﻿@model Entity.Models.Person
-
-@{
-    ViewBag.Title = "Create";
+﻿@{
+    ViewBag.Title = "Добавление нового пользователя";
 }
 
-<h2>Create</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -13,29 +11,31 @@
         <legend>Person</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.FirstName)
+           Ссылка на страницу нового пользователя
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.FirstName)
-            @Html.ValidationMessageFor(model => model.FirstName)
+            <input type="text" name="userUrl" />
         </div>
 
-        <div class="editor-label">
+        @*<div class="editor-label">
             @Html.LabelFor(model => model.LastName)
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.LastName)
             @Html.ValidationMessageFor(model => model.LastName)
+        </div>*@
+        <div class="editor-label">
+           Добавить друзей
         </div>
-
+        @Html.CheckBox("addFriends", false)
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Добавить" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Вернуться к списку", "Index")
 </div>
 
 @section Scripts {

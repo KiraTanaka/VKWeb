@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.Title = "Домашняя страница";
+    ViewBag.Title = "Это Ваша домашняя страница!";
 }
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
+                <h1>@ViewBag.Title</h1>
                 <h2>@ViewBag.Message</h2>
             </hgroup>
            @* <p>
@@ -22,24 +22,21 @@
 <ol class="round">
     <li class="one">
         <h5>Посмотреть список друзей</h5>
-        ASP.NET MVC — это мощная платформа на основе шаблонов, позволяющая создавать динамические веб-сайты с
+        <br />       
+            @Html.ActionLink("Перейти к просмотру", "Index", "People", routeValues: null, htmlAttributes: new { id = "peopleLink" })
+        @*ASP.NET MVC — это мощная платформа на основе шаблонов, позволяющая создавать динамические веб-сайты с
             разделением сфер ответственности и полным контролем над разметкой:
             разработка будет быстрой и удобной. ASP.NET MVC включает много функций,
             обеспечивающих скорость и эффективность разработки на основе тестов, что дает возможность создавать сложные приложения, использующие
             новейшие веб-стандарты.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Дополнительные сведения...</a>
+        <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Дополнительные сведения...</a>*@
+        <br />
     </li>
 
     <li class="two">
         <h5>Показать самое популярное видео среди друзей</h5>
-        NuGet упрощает установку и обновление бесплатных библиотек и средств.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245153">Дополнительные сведения…</a>
-    </li>
+            @Html.ActionLink("Перейти к просмотру", "PopularVideo", "People", routeValues: null, htmlAttributes: new { id = "peopleLink" })
 
-    <li class="three">
-        <h5>Найти поставщика услуг размещения веб-сайтов</h5>
-        Можно легко найти компанию, предоставляющую услуги размещения приложений в Интернете и отвечающую вашим требованиям
-        к цене и функциональным возможностям.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Дополнительные сведения…</a>
+        @*<a href="http://go.microsoft.com/fwlink/?LinkId=245153"></a>*@
     </li>
 </ol>

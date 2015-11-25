@@ -8,6 +8,10 @@ using System.Web.Mvc;
 using Entity.Models;
 using System.Net;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Entity.Bisness_Logic;
 
 namespace Entity.Controllers
 {
@@ -17,12 +21,21 @@ namespace Entity.Controllers
 
         //
         // GET: /People/
-
+        public PeopleController() { }
         public ActionResult Index()
         {
             return View(db.People.ToList());
         }
-
+        public ActionResult PopularVideo()
+        {
+            DateTime day = DateTime.Now;
+            Video popularVideo = db.PopularVideo.FirstOrDefault(x =>
+                    x.DateTime.Day == day.Day
+                    && x.DateTime.Month == day.Month
+                    && x.DateTime.Year == day.Year);
+            ViewBag.PopularVideoPlayer = popularVideo.Player;
+            return View();
+        }
         //
         // GET: /People/Details/5
 
@@ -48,16 +61,45 @@ namespace Entity.Controllers
         // POST: /People/Create
 
         [HttpPost]
-        public ActionResult Create(Person person)
+        public ActionResult Create(string userUrl, bool addFriends)
         {
-            if (ModelState.IsValid)
+            Regex regexUrl = new Regex(@"https://vk.com/(id[0-9]+|[a-z]+)");
+            Regex regexId = new Regex(@"id[0-9]+$");
+            Regex regexIdWithMask = new Regex(@"m/[a-z]+$");
+            Person person = new Person();
+            WebClient client = new WebClient();
+            
+            if (regexUrl.IsMatch(userUrl))
             {
-                db.People.Add(person);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (regexIdWithMask.IsMatch(userUrl))
+                {
+                    string mask=regexIdWithMask.Match(userUrl).Value.Remove(0, 2);
+                    DownloadUsers.GetUserId(mask);
+                }
+                else
+                    person.UID = Int32.Parse(regexId.Match(userUrl).Value.Remove(0, 2));
+                if (addFriends)
+                {
+                    String urlGetFriends = "https://api.vkontakte.ru/method/friends.get?user_id=" + person.UID+"&fields=nickname"; 
+                    List<Person> persons;                
+                    string jsonStringFriends = client.DownloadString(urlGetFriends);
+                    if (jsonStringFriends.Contains("error")) return RedirectToAction("Index");
+                    persons = JsonConvert.DeserializeObject<Persons>(jsonStringFriends).People;
+                }
+                Person personFromDb = db.People.FirstOrDefault(x => x.UID == person.UID);
+                if (personFromDb == null)
+                {
+                    db.People.Add(DownloadUsers.DownloadUserInformation(person.UID,db));
+                    db.SaveChanges();
+                }
+                else
+                {
+                    Response.Write("<script type=\"text/javascript\" language=\"javascript\">alert(\'Пользователь уже есть в базе\')</script>");
+                    //Page pg = new Page();
+                    //Page.ClientScript.RegisterStartupScript(this.GetType(), "scriptkey", "<script>alert('Пользователь уже есть в базе');</script>");
+                }
             }
-
-            return View(person);
+            return RedirectToAction("Index");
         }
        // [HttpPost]
         public ActionResult Insert()
@@ -69,11 +111,11 @@ namespace Entity.Controllers
             String jsonStringFriends = client.DownloadString(urlGetFriends);
             if (jsonStringFriends.Contains("error")) return null;
             persons = JsonConvert.DeserializeObject<Persons>(jsonStringFriends).People;
-            foreach (var person in persons)
-            {
-                db.People.Add(person);
-            }
-            db.SaveChanges();
+            //foreach (var person in persons)
+            //{
+            //    db.People.Add(person);
+            //}
+            //db.SaveChanges();
 
 
 

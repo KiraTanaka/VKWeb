@@ -10,7 +10,7 @@ namespace Entity.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Здравствуйте, выберите то, что хотите увидеть.";
+            ViewBag.Message = "Что хотите посмотреть?)";
             
             return View();
         }

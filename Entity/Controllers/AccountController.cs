@@ -223,10 +223,7 @@ namespace Entity.Controllers
                 return RedirectToAction("ExternalLoginFailure");
             }
 
-            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
-            {
-                return RedirectToLocal(returnUrl);
-            }
+
 
             if (User.Identity.IsAuthenticated)
             {
@@ -263,6 +260,7 @@ namespace Entity.Controllers
             if (ModelState.IsValid)
             {
                 // Добавление нового пользователя в базу данных
+
                 using (UsersContext db = new UsersContext())
                 {
                     UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
@@ -278,11 +276,13 @@ namespace Entity.Controllers
 
                         return RedirectToLocal(returnUrl);
                     }
+
                     else
                     {
                         ModelState.AddModelError("UserName", "Имя пользователя уже существует. Введите другое имя пользователя.");
                     }
                 }
+                
             }
 
             ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(provider).DisplayName;

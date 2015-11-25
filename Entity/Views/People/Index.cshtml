@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Entity.Models.Person>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Список всех пользователей";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Добавить новых пользователей", "Create")
 </p>
 <table>
     <tr>
@@ -28,11 +28,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.LastName)
         </td>
-        <td>
+        @*<td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PersonId }) |
             @Html.ActionLink("Details", "Details", new { id=item.PersonId }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.PersonId })
-        </td>
+        </td>*@
     </tr>
 }
 
