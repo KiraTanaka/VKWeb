@@ -10,5 +10,6 @@ namespace Entity.Models
     {
         public DbSet<Person> People { get; set; }
         public DbSet<Video> PopularVideo { get; set; }
+        public DbSet<AccessToken> AccessToken { get; set; }
     }
 }

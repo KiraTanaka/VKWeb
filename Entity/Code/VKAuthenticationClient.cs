@@ -16,7 +16,7 @@ namespace Entity.Code
         public string appId;
         public string appSecret;
         public string redirectUri;
-        public int scope = 16;
+        public int scope = 65552;
 
         public VKAuthenticationClient(string appId, string appSecret)
         {
@@ -26,9 +26,11 @@ namespace Entity.Code
         string IAuthenticationClient.ProviderName {
             get { return "vkontakte"; }
         }
-        class AccessToken {
-            public string access_token = null;
-            public string user_id = null;
+       public class AccessTokenAndId {
+            [JsonProperty("access_token")]
+            public string accessToken { get; set; }
+            [JsonProperty("user_id")]
+            public string userId { get; set; }
         }
         void IAuthenticationClient.RequestAuthentication(HttpContextBase context, Uri returnUrl)
         {
@@ -40,20 +42,26 @@ namespace Entity.Code
         AuthenticationResult IAuthenticationClient.VerifyAuthentication(HttpContextBase context)
         {
             try {
+                EntityContext db = new EntityContext();
                 string code=context.Request["code"];
+                AccessToken token = new AccessToken();
                 var address = String.Format("https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri={3}",this.appId,this.appSecret,code,this.redirectUri);
                 WebClient client = new WebClient();
                 client.Encoding = System.Text.Encoding.UTF8;
                 Person person;
 
                 var response = client.DownloadString(address);
-                var accessToken=JsonConvert.DeserializeObject<AccessToken>(response);
-
-                address = String.Format("https://api.vk.com/method/users.get?uids={0}&fields=nickname", accessToken.user_id);
+                var access_token=JsonConvert.DeserializeObject<AccessTokenAndId>(response);
+                token.Token = access_token.accessToken;
+                                               
+                    db.AccessToken.Add(token);
+                    db.SaveChanges();
+                
+                address = String.Format("https://api.vk.com/method/users.get?uids={0}&fields=nickname", access_token.userId);
                 client.Encoding = System.Text.Encoding.UTF8;
                 response = client.DownloadString(address);
                 person = JsonConvert.DeserializeObject<Persons>(response).People[0];
-                return new AuthenticationResult(true,(this as IAuthenticationClient).ProviderName,accessToken.user_id,person.FirstName + " " +person.LastName,new Dictionary<string,string>());
+                return new AuthenticationResult(true,(this as IAuthenticationClient).ProviderName,access_token.userId,person.FirstName + " " +person.LastName,new Dictionary<string,string>());
             }
             catch(Exception ex){
                 return new AuthenticationResult(ex);

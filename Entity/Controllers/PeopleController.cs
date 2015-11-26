@@ -66,37 +66,31 @@ namespace Entity.Controllers
             Regex regexUrl = new Regex(@"https://vk.com/(id[0-9]+|[a-z]+)");
             Regex regexId = new Regex(@"id[0-9]+$");
             Regex regexIdWithMask = new Regex(@"m/[a-z]+$");
-            Person person = new Person();
-            WebClient client = new WebClient();
+            List<Person> persons = new List<Person>();
+            persons.Add(new Person());
             
             if (regexUrl.IsMatch(userUrl))
             {
                 if (regexIdWithMask.IsMatch(userUrl))
                 {
                     string mask=regexIdWithMask.Match(userUrl).Value.Remove(0, 2);
-                    DownloadUsers.GetUserId(mask);
+                    persons[0].UID = DownloadUsers.GetUserId(mask);
                 }
                 else
-                    person.UID = Int32.Parse(regexId.Match(userUrl).Value.Remove(0, 2));
+                    persons[0].UID = Int32.Parse(regexId.Match(userUrl).Value.Remove(0, 2));
+                persons[0] = DownloadUsers.DownloadUserInformation(persons[0].UID);
                 if (addFriends)
                 {
-                    String urlGetFriends = "https://api.vkontakte.ru/method/friends.get?user_id=" + person.UID+"&fields=nickname"; 
-                    List<Person> persons;                
-                    string jsonStringFriends = client.DownloadString(urlGetFriends);
-                    if (jsonStringFriends.Contains("error")) return RedirectToAction("Index");
-                    persons = JsonConvert.DeserializeObject<Persons>(jsonStringFriends).People;
+                    persons.AddRange(DownloadUsers.DownloadFriends(persons[0].UID));
                 }
-                Person personFromDb = db.People.FirstOrDefault(x => x.UID == person.UID);
-                if (personFromDb == null)
+                foreach (var person in persons)
                 {
-                    db.People.Add(DownloadUsers.DownloadUserInformation(person.UID,db));
-                    db.SaveChanges();
-                }
-                else
-                {
-                    Response.Write("<script type=\"text/javascript\" language=\"javascript\">alert(\'Пользователь уже есть в базе\')</script>");
-                    //Page pg = new Page();
-                    //Page.ClientScript.RegisterStartupScript(this.GetType(), "scriptkey", "<script>alert('Пользователь уже есть в базе');</script>");
+                    Person personFromDb = db.People.FirstOrDefault(x => x.UID == person.UID);
+                    if (personFromDb == null)
+                    {
+                        db.People.Add(DownloadUsers.DownloadUserInformation(person.UID));
+                        db.SaveChanges();
+                    }
                 }
             }
             return RedirectToAction("Index");
