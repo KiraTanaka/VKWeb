@@ -16,7 +16,7 @@ namespace Entity.Bisness_Logic
         {           
             Person person = new Person();
             client.Encoding = System.Text.Encoding.UTF8;
-            string urlGetUser = String.Format("https://api.vk.com/method/users.get?uids={0}&fields=nickname", person.UID);
+            string urlGetUser = String.Format("https://api.vk.com/method/users.get?uids={0}&fields=nickname", uid);
             var response = client.DownloadString(urlGetUser);
             if (urlGetUser.Contains("error")) return null;
             person = JsonConvert.DeserializeObject<Persons>(response).People[0];

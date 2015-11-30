@@ -26,11 +26,11 @@ namespace Entity.Models
         public int ObjectId { get; set; }
     }
     [Table("access_token")]
-    public class AccessToken
+    public class AccessTokenDB
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Token{ get; set; }
+        public string AccessToken{ get; set; }
     }
 }

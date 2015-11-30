@@ -16,6 +16,8 @@ namespace Entity.Models
         [Required]
         public DateTime DateTime { get; set; }
         [Required]
+        public string Title { get; set; }
+        [Required]
         public int Vid { get; set; }
         [Required]
         public int OwnerId { get; set; }
@@ -23,5 +25,7 @@ namespace Entity.Models
         public int Views { get; set; }
         [Required]
         public string Player { get; set; }
+        [Required]
+        public string VKPlayer { get; set; }
     }
 }

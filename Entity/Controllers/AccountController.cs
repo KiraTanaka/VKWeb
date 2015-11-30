@@ -261,7 +261,7 @@ namespace Entity.Controllers
             {
                 // Добавление нового пользователя в базу данных
 
-                using (UsersContext db = new UsersContext())
+                using (Context db = new Context())
                 {
                     UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
                     // Проверка наличия пользователя в базе данных

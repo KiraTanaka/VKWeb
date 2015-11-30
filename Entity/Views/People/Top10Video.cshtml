@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Entity.Models.Video>
+@{
+    ViewBag.Title = "Топ 10 самых популярных видео среди пользователей";
+}
+<h1>Топ 10 самых популярных видео среди пользователей:</h1>
+<b>
+<ol >
+@foreach (var item in Model) {
+         <li>
+            <h3>@item.Title</h3>
+            <p style="font-weight: normal">Если видео не отображается, то можете перейте по <a href='@item.VKPlayer'>этой ссылке.</a></p>
+            <br />
+            <iframe src='@item.Player' width="607" height="360" frameborder="0"></iframe>
+             <br />
+        </li>
+}
+</ol>
+</b>
+

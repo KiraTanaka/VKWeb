@@ -309,6 +309,7 @@
     <Content Include="Views\People\Delete.cshtml" />
     <Content Include="Views\People\Insert.cshtml" />
     <Content Include="Views\People\PopularVideo.cshtml" />
+    <Content Include="Views\People\Top10Video.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -6,10 +6,10 @@ using System.Data.Entity;
 
 namespace Entity.Models
 {
-    public class EntityContext : DbContext
-    {
-        public DbSet<Person> People { get; set; }
-        public DbSet<Video> PopularVideo { get; set; }
-        public DbSet<AccessToken> AccessToken { get; set; }
-    }
+    //public class Context : DbContext
+    //{
+    //    public DbSet<Person> People { get; set; }
+    //    public DbSet<Video> PopularVideo { get; set; }
+    //    public DbSet<AccessTokenDB> AccessToken { get; set; }
+    //}
 }

@@ -42,9 +42,9 @@ namespace Entity.Code
         AuthenticationResult IAuthenticationClient.VerifyAuthentication(HttpContextBase context)
         {
             try {
-                EntityContext db = new EntityContext();
+                Context db = new Context();
                 string code=context.Request["code"];
-                AccessToken token = new AccessToken();
+                AccessTokenDB token = new AccessTokenDB();
                 var address = String.Format("https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri={3}",this.appId,this.appSecret,code,this.redirectUri);
                 WebClient client = new WebClient();
                 client.Encoding = System.Text.Encoding.UTF8;
@@ -52,7 +52,7 @@ namespace Entity.Code
 
                 var response = client.DownloadString(address);
                 var access_token=JsonConvert.DeserializeObject<AccessTokenAndId>(response);
-                token.Token = access_token.accessToken;
+                token.AccessToken = access_token.accessToken;
                                                
                     db.AccessToken.Add(token);
                     db.SaveChanges();

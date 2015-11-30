@@ -8,13 +8,15 @@ using System.Web.Security;
 
 namespace Entity.Models
 {
-    public class UsersContext : DbContext
+    public class Context : DbContext
     {
-        public UsersContext()
-            : base("DefaultConnection")
-        {
-        }
-
+        //public UsersContext()
+        //    : base("DefaultConnection2")
+        //{
+        //}
+        public DbSet<Person> People { get; set; }
+        public DbSet<Video> PopularVideo { get; set; }
+        public DbSet<AccessTokenDB> AccessToken { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
     }
 

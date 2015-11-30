@@ -17,52 +17,43 @@ namespace Entity.Controllers
 {
     public class PeopleController : Controller
     {
-        private EntityContext db = new EntityContext();
+        private Context db = new Context();
 
-        //
-        // GET: /People/
         public PeopleController() { }
         public ActionResult Index()
-        {
+        {          
             return View(db.People.ToList());
         }
+
         public ActionResult PopularVideo()
         {
             DateTime day = DateTime.Now;
-            Video popularVideo = db.PopularVideo.FirstOrDefault(x =>
+            Video popularVideo = db.PopularVideo.Where(x =>
                     x.DateTime.Day == day.Day
                     && x.DateTime.Month == day.Month
-                    && x.DateTime.Year == day.Year);
+                    && x.DateTime.Year == day.Year).OrderBy(x=>x.Id).First();
             ViewBag.PopularVideoPlayer = popularVideo.Player;
-            return View();
+            return View(popularVideo);
         }
-        //
-        // GET: /People/Details/5
-
-        public ActionResult Details(int id = 0)
+        public ActionResult Top10Video()
         {
-            Person person = db.People.Find(id);
-            if (person == null)
-            {
-                return HttpNotFound();
-            }
-            return View(person);
+            DateTime day = DateTime.Now;
+            List<Video> topVideo = db.PopularVideo.Where(x =>
+                    x.DateTime.Day == day.Day
+                    && x.DateTime.Month == day.Month
+                    && x.DateTime.Year == day.Year).OrderBy(x=>x.Id).ToList();
+            return View(topVideo);
         }
-
-        //
-        // GET: /People/Create
 
         public ActionResult Create()
         {
             return View();
         }
 
-        //
-        // POST: /People/Create
-
         [HttpPost]
         public ActionResult Create(string userUrl, bool addFriends)
         {
+            
             Regex regexUrl = new Regex(@"https://vk.com/(id[0-9]+|[a-z]+)");
             Regex regexId = new Regex(@"id[0-9]+$");
             Regex regexIdWithMask = new Regex(@"m/[a-z]+$");
@@ -95,56 +86,6 @@ namespace Entity.Controllers
             }
             return RedirectToAction("Index");
         }
-       // [HttpPost]
-        public ActionResult Insert()
-        {
-            String urlGetFriends = "https://api.vkontakte.ru/method/friends.get?user_id=" + "72813887&fields=nickname";//Program.UserId; 
-            List<Person> persons;
-            WebClient client = new WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
-            String jsonStringFriends = client.DownloadString(urlGetFriends);
-            if (jsonStringFriends.Contains("error")) return null;
-            persons = JsonConvert.DeserializeObject<Persons>(jsonStringFriends).People;
-            //foreach (var person in persons)
-            //{
-            //    db.People.Add(person);
-            //}
-            //db.SaveChanges();
-
-
-
-            return View();
-        }
-        //
-        // GET: /People/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Person person = db.People.Find(id);
-            if (person == null)
-            {
-                return HttpNotFound();
-            }
-            return View(person);
-        }
-
-        //
-        // POST: /People/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Person person)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(person).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(person);
-        }
-
-        //
-        // GET: /People/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
@@ -154,18 +95,6 @@ namespace Entity.Controllers
                 return HttpNotFound();
             }
             return View(person);
-        }
-
-        //
-        // POST: /People/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Person person = db.People.Find(id);
-            db.People.Remove(person);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
