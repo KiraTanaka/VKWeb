@@ -25,26 +25,6 @@ namespace Entity.Controllers
             return View(db.People.ToList());
         }
 
-        public ActionResult PopularVideo()
-        {
-            DateTime day = DateTime.Now;
-            Video popularVideo = db.PopularVideo.Where(x =>
-                    x.DateTime.Day == day.Day
-                    && x.DateTime.Month == day.Month
-                    && x.DateTime.Year == day.Year).OrderBy(x=>x.Id).First();
-            ViewBag.PopularVideoPlayer = popularVideo.Player;
-            return View(popularVideo);
-        }
-        public ActionResult Top10Video()
-        {
-            DateTime day = DateTime.Now;
-            List<Video> topVideo = db.PopularVideo.Where(x =>
-                    x.DateTime.Day == day.Day
-                    && x.DateTime.Month == day.Month
-                    && x.DateTime.Year == day.Year).OrderBy(x=>x.Id).ToList();
-            return View(topVideo);
-        }
-
         public ActionResult Create()
         {
             return View();

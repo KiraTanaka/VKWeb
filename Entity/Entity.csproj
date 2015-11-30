@@ -173,6 +173,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\VideoController.cs" />
     <Compile Include="External_Data\DownloadUsers.cs" />
     <Compile Include="Code\VKAuthenticationClient.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -308,8 +309,8 @@
     <Content Include="Views\People\Edit.cshtml" />
     <Content Include="Views\People\Delete.cshtml" />
     <Content Include="Views\People\Insert.cshtml" />
-    <Content Include="Views\People\PopularVideo.cshtml" />
-    <Content Include="Views\People\Top10Video.cshtml" />
+    <Content Include="Views\Video\PopularVideo.cshtml" />
+    <Content Include="Views\Video\Top10Video.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

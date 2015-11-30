@@ -4,7 +4,12 @@
 }
 
 <h1>Самое популярное видео среди пользователей:</h1>
-
+@using (Html.BeginForm()) {
+<p>Выберите за какой день вы хотите посмотреть топ: </p>
+    <p><input type="date" name="calendar" value='@DateTime.Now'
+    max="2016-11-30" min="2015-11-30">
+   <input type="submit" value="Вывести"></p>
+}
             <h3>@Model.Title</h3>
             <p>Если видео не отображается, то можете перейте по <a href='@Model.VKPlayer'>этой ссылке.</a></p>
             <iframe src='@Model.Player' width="607" height="360" frameborder="0"></iframe>
