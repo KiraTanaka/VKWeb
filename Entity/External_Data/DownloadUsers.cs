@@ -33,6 +33,7 @@ namespace Entity.Bisness_Logic
         {
             String urlGetFriends = "https://api.vkontakte.ru/method/friends.get?user_id=" + id + "&fields=nickname";
             List<Person> persons;
+            client.Encoding = System.Text.Encoding.UTF8;
             string jsonStringFriends = client.DownloadString(urlGetFriends);
             if (jsonStringFriends.Contains("error")) return null;
             persons = JsonConvert.DeserializeObject<Persons>(jsonStringFriends).People;

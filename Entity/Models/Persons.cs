@@ -8,7 +8,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entity.Models
 {
-
     public class Persons
     {
         [JsonProperty("response")]

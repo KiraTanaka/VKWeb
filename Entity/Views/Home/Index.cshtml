@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Это Ваша домашняя страница!";
+    ViewBag.Title = "Это домашняя страница!";
 }
 @section featured {
     <section class="featured">
@@ -41,7 +41,7 @@
     <li class="four">
         <h5>Добавить новых пользователей</h5>
         <br /> 
-            @Html.ActionLink("Перейти к просмотру", "Create", "People", routeValues: null, htmlAttributes: new { id = "peopleLink" })
+            @Html.ActionLink("Перейти к добавлению", "Create", "People", routeValues: null, htmlAttributes: new { id = "peopleLink" })
         <br /> 
     </li>
 </ol>
