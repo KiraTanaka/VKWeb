@@ -4,9 +4,10 @@
 }
 <h1>Топ 10 самых популярных видео среди пользователей:</h1>
 @using (Html.BeginForm()) {
-<p>Выберите за какой день вы хотите посмотреть топ: </p>
-    <p><input type="date" name="calendar" value='@DateTime.Now'
-    max="2016-11-30" min="2015-11-30">
+<p>Выберите за какой день или промежуток дней вы хотите посмотреть топ( по умолчанию за сегодня): </p>
+    <p> <pre><input style="width: 150px; tab-size:3" type="date" name="calendarfirst" value='@DateTime.Now'
+    max="2016-11-30" min="2015-11-30">       <input style="width: 150px" type="date" name="calendarlast" value='@DateTime.Now'
+    max="2016-11-30" min="2015-11-30"> </pre>
    <input type="submit" value="Вывести"></p>
 }
 <b>

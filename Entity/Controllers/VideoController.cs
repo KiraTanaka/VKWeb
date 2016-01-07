@@ -10,31 +10,39 @@ namespace Entity.Controllers
     public class VideoController : Controller
     {
         private Context db = new Context();
-        public ActionResult PopularVideo(string calendar = null)
+        public ActionResult PopularVideo(string calendarfirst = null, string calendarlast= null)
         {
-            DateTime day = new DateTime();
-            if (calendar == null)
-                day = DateTime.Now;
+            DateTime dayFirst = new DateTime();
+            DateTime dayLast = new DateTime();
+            if (calendarfirst == null)
+                dayFirst = DateTime.Now.Date;
             else
-                day = DateTime.Parse(calendar);
+                dayFirst = DateTime.Parse(calendarfirst);
+            if (calendarlast == null)
+                dayLast = DateTime.Now;
+            else
+                dayLast = DateTime.Parse(calendarlast);
             Video popularVideo = db.PopularVideo.Where(x =>
-                    x.DateTime.Day == day.Day
-                    && x.DateTime.Month == day.Month
-                    && x.DateTime.Year == day.Year).OrderBy(x => x.Id).First();
+                                DateTime.Compare(x.DateTime,dayFirst)>=0
+                                && DateTime.Compare(dayLast, x.DateTime) >= 0).OrderByDescending(x => x.Views).First();
             ViewBag.PopularVideoPlayer = popularVideo.Player;
             return View(popularVideo);
         }
-        public ActionResult Top10Video(string calendar = null)
+        public ActionResult Top10Video(string calendarfirst = null, string calendarlast = null)
         {
-            DateTime day = new DateTime();
-            if (calendar == null)
-                day = DateTime.Now;
+            DateTime dayFirst = new DateTime();
+            DateTime dayLast = new DateTime();
+            if (calendarfirst == null)
+                dayFirst = DateTime.Now.Date;
             else
-                day = DateTime.Parse(calendar);
+                dayFirst = DateTime.Parse(calendarfirst);
+            if (calendarlast == null)
+                dayLast = DateTime.Now;
+            else
+                dayLast = DateTime.Parse(calendarlast);
             List<Video> topVideo = db.PopularVideo.Where(x =>
-                    x.DateTime.Day == day.Day
-                    && x.DateTime.Month == day.Month
-                    && x.DateTime.Year == day.Year).OrderBy(x => x.Id).ToList();
+                                    DateTime.Compare(x.DateTime,dayFirst)>=0
+                                    && DateTime.Compare(dayLast, x.DateTime) >= 0).OrderByDescending(x => x.Views).Take(10).ToList();
             return View(topVideo);
         }
     }
