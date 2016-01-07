@@ -8,7 +8,8 @@ namespace Entity.Models
     [Serializable]
     public class UserInformationToAdd
     {
-        public string userUrl;
+        public string url;
         public bool addFriends;
+        public bool addMembersOfGroup;
     }
 }

@@ -35,19 +35,24 @@ namespace Entity.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(string userUrl, bool addFriends)
+        public ActionResult Create(string userUrl, bool addFriends, bool addMembersOfGroup)
         {
+            if (addFriends && addMembersOfGroup)
+            {
+                return RedirectToAction("Create");
+            }
             //send message
             UserInformationToAdd information = new UserInformationToAdd();
-            information.userUrl = userUrl;
-            information.addFriends = addFriends;            
-          
+            information.url = userUrl;
+            information.addFriends = addFriends;
+            information.addMembersOfGroup = addMembersOfGroup;
+
             IConnectionFactory factory = new NMSConnectionFactory("tcp://localhost:61616");
             IConnection connection = factory.CreateConnection();
             connection = factory.CreateConnection();
             connection.Start();
             ISession session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
-            IDestination QueueDestination = SessionUtil.GetDestination(session,"Users");
+            IDestination QueueDestination = SessionUtil.GetDestination(session, "Users");
             IMessageProducer MessageProducer = session.CreateProducer(QueueDestination);
             //IObjectMessage objMessage = session.CreateObjectMessage(information);
             //XStream xstream = new XStream();

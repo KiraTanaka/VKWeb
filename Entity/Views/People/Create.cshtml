@@ -11,7 +11,7 @@
         <legend>Person</legend>
 
         <div class="editor-label">
-           Ссылка на страницу нового пользователя
+           Ссылка на страницу нового пользователя <br />
         </div>
         <div class="editor-field">
             <input type="text" name="userUrl" />
@@ -25,9 +25,14 @@
             @Html.ValidationMessageFor(model => model.LastName)
         </div>*@
         <div class="editor-label">
-           Добавить друзей
+           Добавить друзей @Html.CheckBox("addFriends", false) <br />
+           (если это ссылка на страницу)
         </div>
-        @Html.CheckBox("addFriends", false)
+        <br />
+        <div class="editor-label">
+           Добавить подписчиков сообщества  @Html.CheckBox("addMembersOfGroup", false) <br />
+           (если это ссылка на сообщество)
+        </div>
         <p>
             <input type="submit" value="Добавить" />
         </p>
